@@ -102,12 +102,7 @@ class VGG16_conv1(nn.Module):
         x = self.features(x)
         return x
 
-
-
-if __name__ == '__main__':
-
-    pass
-
+def main():
     vgg1 = VGG16_conv1()
     vgg2 = VGG16_conv2()
     vgg3 = VGG16_conv3()
@@ -119,8 +114,6 @@ if __name__ == '__main__':
     cont_im = loadim('landscape-small.png')
 
     cont_im = cont_im.unsqueeze(0)
-
-
 
     cont_im.requires_grad = True
 
@@ -136,6 +129,9 @@ if __name__ == '__main__':
     y5_cont = vgg5(cont_im)
     y6_cont = vgg6(cont_im)
     y7_cont = vgg7(cont_im)
+    
+    input_im = style_im
+    input_im = style_im
 
     for i in range(20):
 
@@ -143,13 +139,13 @@ if __name__ == '__main__':
 
         opt.zero_grad()
 
-        y1_ = vgg1(cont_im)
-        y2_ = vgg2(cont_im)
-        y3_ = vgg3(cont_im)
-        y4_ = vgg4(cont_im)
-        y5_ = vgg5(cont_im)
-        y6_ = vgg6(cont_im)
-        y7_ = vgg7(cont_im)
+        y1_ = vgg1(input_im)
+        y2_ = vgg2(input_im)
+        y3_ = vgg3(input_im)
+        y4_ = vgg4(input_im)
+        y5_ = vgg5(input_im)
+        y6_ = vgg6(input_im)
+        y7_ = vgg7(input_im)
 
         y1_d = y1_style - y1_
         y2_d = y2_style - y2_
@@ -173,14 +169,18 @@ if __name__ == '__main__':
             l = torch.sum(dif)
             loss = loss + l
 
-        loss.backward(retain_graph =True)
+        loss.backward(retain_graph=True)
         opt.step()
 
-        b = cont_im[0].detach().numpy()
+        b = input_im[0].detach().numpy()
 
         b = np.rollaxis(b, 0, 3)
-        print(type(b))
+        # print(type(b))
 
         scipy.misc.imsave('content' + str(i) + '.jpg', b)
+
+
+if __name__ == '__main__':
+    main()
 
 
