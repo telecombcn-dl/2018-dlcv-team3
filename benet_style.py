@@ -6,14 +6,13 @@ import torchvision.models as models
 import torch.nn as nn
 
 def loadim(path):
-    style_im = cv2.imread(path)
-    style_im = torch.from_numpy(style_im)
-    style_im = style_im.type('torch.FloatTensor')
-    style_im = style_im.view(3, 224, 224)
-    style_im = style_im.unsqueeze(0)
-    style_im = style_im/128 - 2
+    im = cv2.imread(path, cv2.IMREAD_COLOR)
+    im = np.array([im[:, :, 2], im[:, :, 1], im[:, :, 0]])
+    im = torch.from_numpy(im)
+    im = im.type('torch.FloatTensor')
+    im = im/128 - 2
 
-    return style_im
+    return im
 
 vgg11 = models.vgg11(pretrained=True)
 
@@ -116,9 +115,18 @@ if __name__ == '__main__':
     vgg7 = VGG16_conv7()
 
     cont_im = loadim('landscape-small.png')
+
+    b = cont_im.detach().numpy()
+    c = np.copy(b)
+
+    c = np.rollaxis()
+
+    cont_im = cont_im.unsqueeze(0)
+
     cont_im.requires_grad = True
 
     style_im = loadim('van-gogh-small.png')
+    style_im = style_im.unsqueeze(0)
 
     opt = optim.SGD([cont_im], lr=0.01)
 
