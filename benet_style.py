@@ -103,13 +103,16 @@ class VGG16_conv1(nn.Module):
         return x
 
 def main():
-    vgg1 = VGG16_conv1()
-    vgg2 = VGG16_conv2()
-    vgg3 = VGG16_conv3()
-    vgg4 = VGG16_conv4()
-    vgg5 = VGG16_conv5()
-    vgg6 = VGG16_conv6()
-    vgg7 = VGG16_conv7()
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    vgg1 = VGG16_conv1().cuda()
+    vgg2 = VGG16_conv2().cuda()
+    vgg3 = VGG16_conv3().cuda()
+    vgg4 = VGG16_conv4().cuda()
+    vgg5 = VGG16_conv5().cuda()
+    vgg6 = VGG16_conv6().cuda()
+    vgg7 = VGG16_conv7().cuda()
 
     cont_im = loadim('landscape-small.png')
 
