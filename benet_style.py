@@ -4,6 +4,8 @@ import numpy as np
 import torch.optim as optim
 import torchvision.models as models
 import torch.nn as nn
+from PIL import Image
+import scipy.misc
 
 def loadim(path):
     im = cv2.imread(path, cv2.IMREAD_COLOR)
@@ -116,12 +118,9 @@ if __name__ == '__main__':
 
     cont_im = loadim('landscape-small.png')
 
-    b = cont_im.detach().numpy()
-    c = np.copy(b)
-
-    c = np.rollaxis()
-
     cont_im = cont_im.unsqueeze(0)
+
+
 
     cont_im.requires_grad = True
 
@@ -168,7 +167,13 @@ if __name__ == '__main__':
                         loss += y**2
 
         loss.backward()
+        opt.step()
 
-    # print(x)
+        b = cont_im[0].detach().numpy()
 
-    pass
+        b = np.rollaxis(b, 0, 3)
+        print(type(b))
+
+        scipy.misc.imsave('content' + str(i) + '.jpg', b)
+
+
