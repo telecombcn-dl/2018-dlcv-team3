@@ -125,16 +125,15 @@ def main():
 
     opt = optim.SGD([cont_im], lr=0.0001)
 
-    y1_style = vgg1(style_im)
-    y2_style = vgg2(style_im)
-    y3_style = vgg3(style_im)
-    y4_cont = vgg4(style_im)
-    y5_cont = vgg5(cont_im)
-    y6_cont = vgg6(cont_im)
-    y7_cont = vgg7(cont_im)
+    y1_targ = vgg1(style_im)
+    y2_targ = vgg2(style_im)
+    y3_targ = vgg3(style_im)
+    y4_targ = vgg4(style_im)
+    y5_targ = vgg5(style_im)
+    y6_targ = vgg6(style_im)
+    y7_targ = vgg7(style_im)
     
-    input_im = style_im
-    input_im = style_im
+    input_im = cont_im
 
     for i in range(20):
 
@@ -150,13 +149,13 @@ def main():
         y6_ = vgg6(input_im)
         y7_ = vgg7(input_im)
 
-        y1_d = y1_style - y1_
-        y2_d = y2_style - y2_
-        y3_d = y3_style - y3_
-        y4_d = y4_cont - y4_
-        y5_d = y5_cont - y5_
-        y6_d = y6_cont - y6_
-        y7_d = y7_cont - y7_
+        y1_d = y1_targ - y1_
+        y2_d = y2_targ - y2_
+        y3_d = y3_targ - y3_
+        y4_d = y4_targ - y4_
+        y5_d = y5_targ - y5_
+        y6_d = y6_targ - y6_
+        y7_d = y7_targ - y7_
 
         y1_d = y1_d * y1_d
         y2_d = y2_d * y2_d
